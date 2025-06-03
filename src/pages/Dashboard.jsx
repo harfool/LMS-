@@ -4,39 +4,45 @@ import { Link } from 'react-router-dom';
 
 const Dashboard = ({ user }) => {
   const upcomingTests = [
-    { id: 1, name: 'RCIT Mid-Term Exam', date: '2023-10-15', duration: '60 min' },
-    { id: 2, name: 'BSTC Practice Test', date: '2023-10-18', duration: '45 min' },
-    { id: 3, name: 'CBSE Maths Quiz', date: '2023-10-20', duration: '30 min' },
+    { id: 1, name: 'RCIT Mid-Term Exam', date: '2025-06-10', duration: '60 min' },
+    { id: 2, name: 'BSTC Practice Test', date: '2025-06-15', duration: '45 min' },
+    { id: 3, name: 'CBSE Maths Quiz', date: '2025-06-20', duration: '30 min' },
   ];
 
   const recentResults = [
-    { id: 1, test: 'RCIT Chapter 5 Test', date: '2023-10-05', score: '85%' },
-    { id: 2, test: 'BSTC English Test', date: '2023-10-01', score: '78%' },
-    { id: 3, test: 'CBSE Science Test', date: '2023-09-28', score: '92%' },
+    { id: 1, test: 'RCIT Chapter 5 Test', date: '2025-06-01', score: '85%' },
+    { id: 2, test: 'BSTC English Test', date: '2025-05-28', score: '78%' },
+    { id: 3, test: 'CBSE Science Test', date: '2025-05-25', score: '92%' },
   ];
+
+  if (!user) {
+    return <div className="text-center text-red-600 mt-10  h-[400px]">User data not available.</div>;
+  }
 
   return (
     <div className="max-w-6xl mx-auto">
+      {/* Welcome Banner */}
       <div className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-2xl p-6 mb-8 shadow-lg">
         <div className="flex flex-col md:flex-row items-center">
           <div className="bg-gray-200 border-2 border-dashed rounded-xl w-24 h-24 mb-4 md:mb-0 md:mr-6" />
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold">Welcome back, {user.name}</h1>
+            <h1 className="text-2xl md:text-3xl font-bold">Welcome back, {user?.name || 'Student'}</h1>
             <p className="mt-2 opacity-90">
-              You're enrolled in: <span className="font-semibold">{user.course}</span>
+              You're enrolled in: <span className="font-semibold">{user?.course}</span>
             </p>
             <div className="flex flex-wrap gap-2 mt-4">
               <span className="bg-indigo-800 bg-opacity-50 px-3 py-1 rounded-full text-sm">
-                Student ID: {user.id}
+                Student ID: {user?.id}
               </span>
               <span className="bg-indigo-800 bg-opacity-50 px-3 py-1 rounded-full text-sm">
-                Email: {user.email}
+                Email: {user?.email}
               </span>
             </div>
           </div>
         </div>
       </div>
 
+      {/* Quick Actions */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <Link 
           to="/tests" 
@@ -90,7 +96,9 @@ const Dashboard = ({ user }) => {
         </Link>
       </div>
 
+      {/* Upcoming Tests & Recent Results */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Upcoming Tests */}
         <div className="bg-white rounded-xl p-6 shadow-md border border-gray-100">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-bold">Upcoming Tests</h2>
@@ -98,7 +106,6 @@ const Dashboard = ({ user }) => {
               View All
             </Link>
           </div>
-          
           <div className="space-y-4">
             {upcomingTests.map(test => (
               <div key={test.id} className="flex justify-between items-center p-4 border border-gray-200 rounded-lg">
@@ -108,14 +115,18 @@ const Dashboard = ({ user }) => {
                     Date: {test.date} | Duration: {test.duration}
                   </p>
                 </div>
-                <button className="px-4 py-2 bg-indigo-100 text-indigo-700 rounded-lg hover:bg-indigo-200 transition-colors">
+                <button 
+                  onClick={() => alert(`Starting test: ${test.name}`)}
+                  className="px-4 py-2 bg-indigo-100 text-indigo-700 rounded-lg hover:bg-indigo-200 transition-colors"
+                >
                   Start
                 </button>
               </div>
             ))}
           </div>
         </div>
-        
+
+        {/* Recent Results */}
         <div className="bg-white rounded-xl p-6 shadow-md border border-gray-100">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-bold">Recent Results</h2>
@@ -123,7 +134,6 @@ const Dashboard = ({ user }) => {
               View All
             </Link>
           </div>
-          
           <div className="space-y-4">
             {recentResults.map(result => (
               <div key={result.id} className="flex justify-between items-center p-4 border border-gray-200 rounded-lg">
@@ -135,7 +145,10 @@ const Dashboard = ({ user }) => {
                 </div>
                 <div className="flex items-center">
                   <span className="font-bold text-lg mr-3">{result.score}</span>
-                  <button className="text-indigo-600 hover:text-indigo-800">
+                  <button 
+                    onClick={() => alert(`Viewing details for: ${result.test}`)}
+                    className="text-indigo-600 hover:text-indigo-800"
+                  >
                     View Details
                   </button>
                 </div>
@@ -145,6 +158,7 @@ const Dashboard = ({ user }) => {
         </div>
       </div>
 
+      {/* Quick Resources */}
       <div className="bg-white rounded-xl p-6 shadow-md border border-gray-100 mt-8">
         <h2 className="text-xl font-bold mb-6">Quick Resources</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -155,20 +169,20 @@ const Dashboard = ({ user }) => {
             <h3 className="font-medium text-indigo-700">Previous Year Papers</h3>
             <p className="text-sm text-gray-600 mt-1">Access past exam papers</p>
           </Link>
-          <a 
-            href="#" 
+          <Link 
+            to="/scholarships" 
             className="p-4 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-colors"
           >
             <h3 className="font-medium text-indigo-700">Scholarship Info</h3>
             <p className="text-sm text-gray-600 mt-1">Check scholarship opportunities</p>
-          </a>
-          <a 
-            href="#" 
+          </Link>
+          <Link 
+            to="/calendar" 
             className="p-4 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-colors"
           >
             <h3 className="font-medium text-indigo-700">Academic Calendar</h3>
             <p className="text-sm text-gray-600 mt-1">View important dates</p>
-          </a>
+          </Link>
         </div>
       </div>
     </div>
